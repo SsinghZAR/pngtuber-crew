@@ -7,6 +7,7 @@ from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from typing import Any
+import sys
 
 import yaml
 from PIL import Image, ImageDraw
@@ -461,7 +462,11 @@ class SetupApp(tk.Tk):
 
 
 def main() -> int:
-    app = SetupApp(Path("config.yaml").resolve())
+    if getattr(sys, "frozen", False):
+        cfg_path = Path(sys.executable).resolve().with_name("config.yaml")
+    else:
+        cfg_path = Path("config.yaml").resolve()
+    app = SetupApp(cfg_path)
     app.mainloop()
     return 0
 

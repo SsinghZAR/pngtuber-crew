@@ -2,21 +2,29 @@ import argparse
 import asyncio
 import logging
 from pathlib import Path
+import sys
 
 from .config import ConfigError, load_config
 from .state import PNGTuberBotRuntime
+
+
+def _default_config_path() -> Path:
+    # When bundled with PyInstaller, default to config.yaml next to the EXE.
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).resolve().with_name("config.yaml")
+    return Path("config.yaml").resolve()
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="pngtuberbot")
     parser.add_argument(
         "--config",
-        default="config.yaml",
-        help="Path to config.yaml (default: ./config.yaml)",
+        default=None,
+        help="Path to config.yaml (default: next to the EXE / current folder)",
     )
     args = parser.parse_args(argv)
 
-    config_path = Path(args.config)
+    config_path = Path(args.config).resolve() if args.config else _default_config_path()
 
     log = logging.getLogger("pngtuberbot")
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")

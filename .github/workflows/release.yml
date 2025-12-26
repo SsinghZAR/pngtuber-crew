@@ -1,0 +1,72 @@
+name: build-release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Build EXEs (PyInstaller)
+        run: |
+          python -m PyInstaller RunBot.spec
+          python -m PyInstaller Setup.spec
+
+      - name: Package release zip
+        shell: pwsh
+        run: |
+          $out = "release-out"
+          if (Test-Path $out) { Remove-Item -Recurse -Force $out }
+          New-Item -ItemType Directory -Path $out | Out-Null
+
+          function Copy-IfExists([string]$Path, [string]$Dest) {
+            if (Test-Path $Path) { Copy-Item $Path $Dest -Force }
+          }
+
+          Copy-IfExists ".\dist\RunBot.exe" $out
+          Copy-IfExists ".\dist\Setup.exe" $out
+          if (Test-Path ".\dist\RunBot\RunBot.exe") { Copy-Item ".\dist\RunBot\RunBot.exe" $out -Force }
+          if (Test-Path ".\dist\Setup\Setup.exe") { Copy-Item ".\dist\Setup\Setup.exe" $out -Force }
+
+          Copy-Item ".\config.yaml.example" $out -Force
+          Copy-Item ".\README.md" $out -Force
+
+          New-Item -ItemType Directory -Path (Join-Path $out "assets\icons") -Force | Out-Null
+          Copy-Item ".\assets\icons\README.txt" (Join-Path $out "assets\icons") -Force
+          Copy-IfExists ".\assets\icons\default_mute.png" (Join-Path $out "assets\icons")
+          Copy-IfExists ".\assets\icons\default_deaf.png" (Join-Path $out "assets\icons")
+
+          Compress-Archive -Path (Join-Path $out "*") -DestinationPath (Join-Path $out "PNGTuberBot-windows.zip")
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PNGTuberBot-windows
+          path: release-out/PNGTuberBot-windows.zip
+
+      - name: Create GitHub Release (tags only)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-out/PNGTuberBot-windows.zip
+
+

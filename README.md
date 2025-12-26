@@ -6,7 +6,7 @@ Windows-first desktop bot that:
 - Controls individual OBS sources (per-user avatar + mute/deaf icons)
 
 ## Download & run (recommended)
-1. Go to your repo’s **Releases** page on GitHub and download `PNGTuberBot-windows.zip`.
+1. Go to the repo’s **Releases** page on GitHub and download `PNGTuberBot-windows.zip`.
 2. Extract it to a folder (e.g. `C:\PNGTuberBot\`).
 3. Run `Setup.exe` to create/edit `config.yaml` (it saves **next to the EXE**).
 4. Run `RunBot.exe` when you want the automation running during stream.

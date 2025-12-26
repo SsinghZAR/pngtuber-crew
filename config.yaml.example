@@ -1,0 +1,52 @@
+# PNGTuberBot configuration (example)
+#
+# Copy this file to `config.yaml` and fill in values.
+# IMPORTANT: `config.yaml` contains secrets (Discord token, OBS password). Do not share it.
+
+discord:
+  bot_token: "YOUR_DISCORD_BOT_TOKEN"
+  guild_id: 0                # Discord server ID (snowflake)
+  voice_channel_id: 0        # Voice channel ID (snowflake)
+
+obs:
+  websocket_host: "localhost"
+  websocket_port: 4455
+  websocket_password: ""     # leave empty if you have no password set
+  scene_name: "Gaming"       # single scene managed by the bot (MVP)
+
+users:
+  - discord_id: "123456789012345678"
+    name: "Alice"
+    idle_animation: "assets/alice_idle.gif"
+    talking_animation: "assets/alice_talk.gif"
+    position_slot: 1           # 1-6 or null for auto
+    icon_position: "top-right" # top-right|top-left|bottom-right|bottom-left
+    custom_mute_icon: null
+    custom_deaf_icon: null
+
+layout:
+  mode: "simple"
+  positions:
+    slot_1: [100, 100]
+    slot_2: [300, 100]
+    slot_3: [500, 100]
+    slot_4: [100, 400]
+    slot_5: [300, 400]
+    slot_6: [500, 400]
+
+icons:
+  mute_default: "assets/icons/default_mute.png"
+  deaf_default: "assets/icons/default_deaf.png"
+  size: 64
+
+advanced:
+  animation_duration: 0.5
+  reconnect_attempts: 3
+  log_level: "INFO"
+
+  # Speaking detection (VAD-ish) tuning.
+  talking_threshold: 0.02      # RMS threshold; tune per server/mic
+  talking_hangover_ms: 300     # ms to stay "talking" after audio falls below threshold
+  talking_while_muted: false   # if false, muted users never switch to talking.gif
+
+

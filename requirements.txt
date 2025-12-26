@@ -1,0 +1,17 @@
+# Runtime dependencies for PNGTuberBot
+#
+# Note: Voice receive requires native wheels on Windows (PyNaCl). Install with:
+#   python -m pip install -r requirements.txt
+#
+discord.py[voice]>=2.4.0,<3.0
+# Voice receive is published as alpha versions on PyPI.
+discord-ext-voice-recv==0.5.2a179
+
+# OBS WebSocket v5 client (async)
+simpleobsws>=1.4.0
+
+# Config + assets
+PyYAML>=6.0.1
+Pillow>=10.4.0
+
+

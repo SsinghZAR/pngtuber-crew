@@ -4,8 +4,8 @@ import logging
 from pathlib import Path
 import sys
 
-from .config import ConfigError, load_config
-from .state import PNGTuberBotRuntime
+from pngtuberbot.config import ConfigError, load_config
+from pngtuberbot.state import PNGTuberBotRuntime
 
 
 def _default_config_path() -> Path:

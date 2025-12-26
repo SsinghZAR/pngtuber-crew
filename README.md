@@ -5,6 +5,12 @@ Windows-first desktop bot that:
 - Joins the voice channel (listen-only) to detect who is speaking
 - Controls individual OBS sources (per-user avatar + mute/deaf icons)
 
+## Download & run (recommended)
+1. Go to your repo’s **Releases** page on GitHub and download `PNGTuberBot-windows.zip`.
+2. Extract it to a folder (e.g. `C:\PNGTuberBot\`).
+3. Run `Setup.exe` to create/edit `config.yaml` (it saves **next to the EXE**).
+4. Run `RunBot.exe` when you want the automation running during stream.
+
 ## Quick start (run from source)
 
 ### Prereqs
@@ -68,17 +74,17 @@ Per user ID `123...`:
 - It joins the voice channel only to detect speaking state and receives PCM frames in-memory.
 
 ## Building Windows EXEs (PyInstaller)
-Install PyInstaller:
+Install build deps:
 
 ```powershell
-.\venv\Scripts\python.exe -m pip install pyinstaller
+.\venv\Scripts\python.exe -m pip install -r requirements.txt -r requirements-dev.txt
 ```
 
 Build:
 
 ```powershell
-pyinstaller RunBot.spec
-pyinstaller Setup.spec
+.\venv\Scripts\python.exe -m PyInstaller RunBot.spec
+.\venv\Scripts\python.exe -m PyInstaller Setup.spec
 ```
 
 Outputs appear under `dist/`.

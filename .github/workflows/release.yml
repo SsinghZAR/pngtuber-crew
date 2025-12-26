@@ -67,6 +67,11 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: release-out/PNGTuberBot-windows.zip
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            release-out/PNGTuberBot-windows.zip
+            release-out/Setup.exe
+            release-out/RunBot.exe
 
 

@@ -12,7 +12,7 @@ import sys
 import yaml
 from PIL import Image, ImageDraw
 
-from .obs_client import ObsClient
+from pngtuberbot.obs_client import ObsClient
 
 
 @dataclass
